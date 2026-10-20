@@ -15,3 +15,6 @@ node_modules/
 /C_행사준비/
 /D_화면과연결/
 /E_짧은연습/
+
+# Generated reports, data copies, screenshots and verification outputs
+/results/

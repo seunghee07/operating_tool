@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f8fb" />
+    <meta name="description" content="매출 비교와 팝업 행사 준비 현황을 확인하는 운영 대시보드" />
+    <title>운영 대시보드 | 모먼트룸</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=stage1-20261020" />
+    <script defer src="vendor/xlsx.full.min.js?v=stage1-20261020"></script>
+    <script defer src="sales-data.js?v=stage1-20261020"></script>
+    <script defer src="app.js?v=stage1-20261020"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="#top" aria-label="운영 대시보드 홈"><span class="brand-mark">m</span><span><strong>moment room</strong><small>STORE OPERATIONS</small></span></a>
+        <div class="side-label">WORKSPACE</div>
+        <nav class="side-nav" aria-label="주요 메뉴">
+          <a class="nav-item active" href="#sales"><span class="nav-icon">◫</span>매출 대시보드</a>
+          <a class="nav-item" href="#tasks"><span class="nav-icon">☷</span>행사 준비</a>
+          <a class="nav-item" href="#weather"><span class="nav-icon">☁</span>날씨 안내</a>
+        </nav>
+        <div class="sidebar-spacer"></div>
+        <div class="side-event"><div class="event-dot"></div><div><strong>책상 위, 작은 숲</strong><span>모먼트룸 팝업스토어</span></div><span class="event-chevron">↗</span></div>
+        <div class="sidebar-foot"><span class="avatar">점</span><span><strong>점포 운영팀</strong><small>실습용 대시보드</small></span><span class="more">···</span></div>
+      </aside>
+
+      <main class="main" id="top">
+        <header class="topbar"><div class="breadcrumb">운영 관리 <span>/</span> <strong>매출 대시보드</strong></div><div class="top-actions"><span class="demo-chip"><i></i> 교육용 가상 데이터</span><button class="icon-button" id="refreshButton" aria-label="데이터 새로고침" title="다시 불러오기">↻</button><div class="top-avatar">운</div></div></header>
+        <div class="content">
+          <section class="page-heading" id="sales"><div><div class="eyebrow">STORE PERFORMANCE</div><h1>운영 대시보드</h1><p>매출 흐름과 행사 준비 현황을 한곳에서 확인하세요.</p></div><div class="heading-right"><div class="updated"><span class="live-dot"></span><span id="dataStatus">데이터를 불러오는 중</span></div><button class="button button-primary" id="reportButton"><span>↓</span> 보고서 다운로드</button></div></section>
+
+          <div id="appError" class="app-error" role="alert" hidden></div><details class="validation-panel"><summary id="validationSummary">원본 검증 결과를 준비하고 있습니다.</summary><div id="validationDetails"></div></details>
+          <section class="filter-bar" aria-label="매출 필터"><div class="filter-title"><span class="filter-symbol">☷</span><strong>필터</strong><span class="filter-muted">조건을 선택해 비교 범위를 조정하세요</span></div><div class="filters"><label>점포<select id="storeFilter"><option value="">전체 점포</option></select></label><label>채널<select id="channelFilter"><option value="">전체 채널</option></select></label><label>기준주<select id="weekFilter"><option value="">전체 기간</option></select></label><label>브랜드<select id="brandFilter"><option value="">전체 브랜드</option></select></label><label>장르<select id="genreFilter"><option value="">전체 장르</option></select></label><button id="clearFilters" class="clear-filter">초기화</button></div></section>
+
+          <section class="metric-grid" aria-label="핵심 지표"><article class="metric-card"><div class="metric-top"><span>총 매출</span><span class="metric-icon mint">₩</span></div><div class="metric-value" id="salesKpi">—</div><div class="metric-foot"><span class="metric-sub" id="salesRows">데이터 준비 중</span><span class="mini-bars green-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div></article><article class="metric-card"><div class="metric-top"><span>총 목표</span><span class="metric-icon blue">◎</span></div><div class="metric-value" id="targetKpi">—</div><div class="metric-foot"><span class="metric-sub">선택 조건 합계</span><span class="metric-tag blue-tag" id="gapKpi">목표 차이 —</span></div></article><article class="metric-card"><div class="metric-top"><span>목표 달성률</span><span class="metric-icon violet">↗</span></div><div class="metric-value" id="rateKpi">—</div><div class="metric-foot"><span class="metric-sub">합계 매출 ÷ 합계 목표</span><span class="metric-tag violet-tag" id="costKpi">비용 차감액 —</span></div></article></section>
+
+          <div class="dashboard-grid"><section class="panel chart-panel"><div class="panel-heading"><div><h2 id="chartTitle">점포별 매출 비교</h2><p id="chartDescription">점포별 매출과 목표 · 단위: 만원</p></div><div class="chart-options"><div class="chart-modes" role="group" aria-label="매출 비교 기준"><button type="button" class="selected" data-chart-mode="store">점포</button><button type="button" data-chart-mode="week">주간</button><button type="button" data-chart-mode="channel">채널</button></div><div class="legend"><span><i class="legend-sales"></i>매출</span><span><i class="legend-target"></i>목표</span></div></div></div><div id="salesChart" class="chart" aria-label="주간 매출 비교 차트"></div><div class="chart-note"><span class="note-mark">i</span> 선택된 필터 기준으로 합산한 값입니다.</div></section>
+
+</div>
+
+          <section class="panel records-panel"><div class="panel-heading records-heading"><div><h2>매출 상세</h2><p id="recordCaption">통합 실적 기록을 불러오는 중입니다.</p></div><div class="record-tools"><label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="브랜드 또는 기록 검색" aria-label="매출 기록 검색" /></label><label class="upload-button" for="salesUpload">↑ 원본 파일 반영</label><input id="salesUpload" type="file" accept=".xlsx,.xls" multiple hidden /></div></div><div class="table-wrap"><table class="sales-table"><thead><tr><th>기록 ID</th><th>기준주</th><th>점포</th><th>채널</th><th>브랜드</th><th>장르</th><th>매출</th><th>목표</th><th>달성률</th><th>비용</th><th>상태</th><th>메모</th><th>출처 / 원본 위치</th></tr></thead><tbody id="recordsBody"><tr><td colspan="13" class="empty-state">데이터를 불러오고 있습니다.</td></tr></tbody></table></div><div class="table-footer"><span id="tableCount">—</span><span><span id="memoStatus" aria-live="polite">메모는 기록 ID에 연결되어 이 브라우저에 저장됩니다.</span></span></div></section>
+
+            <section class="panel weather-panel" id="weather"><div class="panel-heading"><div><h2>오늘의 날씨</h2><p>서울 중구 참고 좌표 · 샘플</p></div><span class="weather-badge">예제</span></div><div class="weather-current"><div class="weather-cloud">☁</div><div><div class="weather-temp" id="weatherTemp">—°</div><div class="weather-desc" id="weatherDesc">샘플 불러오는 중</div></div><div class="weather-feels" id="weatherFeels">체감 —°<br />습도 —%</div></div><div class="forecast-list" id="forecastList"></div><div class="weather-disclaimer">ⓘ 교육용 예제 데이터이며 실제 관측·예보가 아닙니다. 예제A점의 실제 위치와 다릅니다.</div></section>
+          <section class="tasks-section" id="tasks"><div class="section-title"><div><div class="eyebrow">EVENT CHECKLIST</div><h2>모먼트룸 팝업 준비 현황</h2><p>2026년 10월 20일 기준 · 담당 역할별 준비 항목</p></div><div class="task-summary"><span class="summary-number" id="incompleteCount">—</span><span>미완료 항목</span></div></div><div class="task-stats" id="taskStats"></div><div class="panel task-panel"><div class="panel-heading task-heading"><div><h2>준비 항목</h2><p>완료·취소 항목을 제외한 미완료 업무</p></div><label class="task-select-label">영역별 보기<select id="taskAreaFilter"><option value="">전체 업무 영역</option></select></label></div><div class="task-list" id="taskList"><div class="empty-state">준비 항목을 불러오는 중입니다.</div></div><div class="task-footer" id="taskFooter"></div></div></section>
+          <footer class="page-footer"><span>운영 대시보드 <span class="footer-dot">·</span> 내부 회의용 보고 지원</span><span>제공된 실습 자료를 기반으로 표시합니다.</span></footer>
+        </div>
+      </main>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
