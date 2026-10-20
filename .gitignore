@@ -1,0 +1,17 @@
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+.env.local
+*.pem
+*.key
+
+# Dependencies
+node_modules/
+
+# Practice source materials (keep original A–E folders out of Git)
+/A_매출비교/
+/B_팝업오픈/
+/C_행사준비/
+/D_화면과연결/
+/E_짧은연습/
