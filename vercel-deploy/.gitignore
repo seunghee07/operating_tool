@@ -1,0 +1,24 @@
+# Local secrets and environment files
+.env
+.env.*
+!.env.example
+.env.local
+*.pem
+*.key
+
+# Dependencies
+node_modules/
+
+# Excluded practice originals and private materials
+B_팝업오픈/
+E_짧은연습/
+results/
+sites/
+.env.local
+
+# Generated reports
+*.xlsx
+!A_매출비교/01_영업실적.xlsx
+!A_매출비교/02_온라인실적.xlsx
+!A_매출비교/03_팝업실적.xlsx
+!A_매출비교/04_보고양식.xlsx
